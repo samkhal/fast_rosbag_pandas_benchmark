@@ -1,0 +1,9 @@
+*.pyc
+*.bag
+*.egg-info*
+
+installed_build
+
+fast_rosbag_pandas/
+results/
+html/
