@@ -50,11 +50,24 @@ def print_benchmark_table(include_rosbag_pandas=True, repeat=True):
                 lambda: fast_rosbag_pandas.rosbag_to_dataframe(ROOT_DIR + "/bags/" + bagname, "points"), repeat=repeat
             )
         )
-    df = df.append(pd.Series(fast_rosbag_pandas_times, index=bagnames, name="fase_rosbag_pandas"))
+    df = df.append(pd.Series(fast_rosbag_pandas_times, index=bagnames, name="fast_rosbag_pandas"))
 
-    print(tabulate(df.transpose(), tablefmt="pipe", headers="keys", floatfmt=".4f"))
+    df = df.transpose()
+
+    # Add comparison
+    if include_rosbag_pandas:
+        df["Speedup"] = df["rosbag_pandas"] / df["fast_rosbag_pandas"]
+
+    print(
+        tabulate(
+            df,
+            tablefmt="pipe",
+            headers=["rosbag_pandas (s)", "fast_rosbag_pandas (s)", "speedup factor"],
+            floatfmt=(".4f", ".4f", ".4f", ".1f"),
+        )
+    )
 
 
 if __name__ == "__main__":
-    # print_benchmark_table(include_rosbag_pandas=True, repeat=True)
-    print_benchmark_table(include_rosbag_pandas=False, repeat=False)
+    print_benchmark_table(include_rosbag_pandas=True, repeat=True)
+    # print_benchmark_table(include_rosbag_pandas=True, repeat=False)
