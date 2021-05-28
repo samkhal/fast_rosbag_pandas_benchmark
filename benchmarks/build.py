@@ -16,4 +16,6 @@ if __name__ == "__main__":
     env.update({"PYTHONPATH": "/opt/ros/melodic/lib/python2.7/dist-packages", "PWD": os.getcwd()})
 
     os.symlink(build_dir, "src/fast_rosbag_pandas")
-    subprocess.call(["/opt/ros/melodic/bin/catkin_make", "-DCMAKE_BUILD_TYPE=RelWithDebInfo"], env=env)
+    subprocess.check_call(
+        ["/opt/ros/melodic/bin/catkin_make", "-DCMAKE_CXX_FLAGS=-O3 -g -DNDEBUG", "-DCMAKE_BUILD_TYPE="], env=env
+    )
